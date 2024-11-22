@@ -1,29 +1,27 @@
 #Joshua Martin CIS261 Course Project Phase 3
 from datetime import datetime
 
-# Function to open and store data to text file
 
+# Function to open and store data to text file
 def write_employee_data_to_file(employee_data):
 
-    with open("employee_data.txt", "a") as file:  # Open file in append mode
+    with open("employee_data_report.txt", "a") as file:  # Open file in append mode
 
         file.write(employee_data + "\n")
 
 
 # Function to input the from date and to date for hours worked
-
 def get_date_range():
 
     while True:
 
         try:
 
-            from_date = input("Enter From Date (mm/dd/yyyy): ")
+            from_date = input("Enter The Begin Date (mm/dd/yyyy): ")
 
-            to_date = input("Enter To Date (mm/dd/yyyy): ")
+            to_date = input("Enter The End Date (mm/dd/yyyy): ")
 
 # Check if dates are in the correct format
-
             from_date = datetime.strptime(from_date, "%m/%d/%Y")
 
             to_date = datetime.strptime(to_date, "%m/%d/%Y")
@@ -32,18 +30,17 @@ def get_date_range():
 
         except ValueError:
 
-            print("Invalid date format. Please enter date in mm/dd/yyyy format.")
+            print("Invalid format. Please enter the date as the mm/dd/yyyy format.")
 
     return from_date.strftime("%m/%d/%Y"), to_date.strftime("%m/%d/%Y")
 
  
 # Function to input employee data and write to text file
-
 def collect_employee_data():
 
     while True:
 
-        employee_name = input("Enter employee's name (or type 'end' to finish): ")
+        employee_name = input("Enter the employee's name (or type 'end' to finish): ")
 
         if employee_name.lower() == 'end':
 
@@ -51,18 +48,15 @@ def collect_employee_data():
 
  
 # Call the date input function to get from and to dates
-
         from_date, to_date = get_date_range()
-
- 
 
         try:
 
-            hours_worked = float(input(f"Enter total hours worked for {employee_name}: "))
+            hours_worked = float(input(f"Enter the total hours worked for {employee_name}: "))
 
-            hourly_rate = float(input(f"Enter hourly rate for {employee_name}: "))
+            hourly_rate = float(input(f"Enter the hourly rate for {employee_name}: "))
 
-            tax_rate = float(input(f"Enter income tax rate for {employee_name} (as a percentage, e.g., 20 for 20%): ")) / 100
+            tax_rate = float(input(f"Enter the income tax rate for {employee_name} (as a percentage, e.g., 20 for 20%): ")) / 100
 
         except ValueError:
 
@@ -72,7 +66,6 @@ def collect_employee_data():
 
  
 # Pipe-delimited format to store employee data in the text file
-
         employee_data = f"{from_date}|{to_date}|{employee_name}|{hours_worked}|{hourly_rate}|{tax_rate}"
 
         write_employee_data_to_file(employee_data)
@@ -80,7 +73,6 @@ def collect_employee_data():
  
 
 # Function to validate date
-
 def validate_date(date_str):
 
     try:
@@ -96,19 +88,17 @@ def validate_date(date_str):
  
 
 # Function to generate the report
-
 def generate_report():
 
     from_date_input = input("Enter the From Date for the report (or 'All' to display all records): ")
 
- 
     if from_date_input.lower() != "all" and not validate_date(from_date_input):
 
-        print("Invalid date format. Please enter date in mm/dd/yyyy format.")
+        print("Invalid format. Please enter date in mm/dd/yyyy format.")
 
         return
 
- 
+ #Totals Dictionary
     totals = {
 
         'total_employees': 0,
@@ -125,10 +115,9 @@ def generate_report():
 
  
 # Read data from file
-
     try:
 
-        with open("employee_data.txt", "r") as file:
+        with open("employee_data_report.txt", "r") as file:
 
             print("\nEmployee Payroll Information:")
 
@@ -140,7 +129,6 @@ def generate_report():
 
  
 # Convert string data to correct types
-
                 hours_worked = float(hours_worked)
 
                 hourly_rate = float(hourly_rate)
@@ -149,7 +137,6 @@ def generate_report():
 
  
 # Calculate payroll details
-
                 gross_pay = hours_worked * hourly_rate
 
                 income_tax = gross_pay * tax_rate
@@ -158,12 +145,10 @@ def generate_report():
 
  
 # Check if the record should be included in the report
-
-                if from_date_input.lower() == "all" or from_date_input == rec_from_date:
+            if from_date_input.lower() == "all" or from_date_input == rec_from_date:
 
 
 # Display individual employee payroll details
-
                     print(f"\nFrom Date: {rec_from_date}")
 
                     print(f"To Date: {rec_to_date}")
@@ -183,8 +168,7 @@ def generate_report():
                     print(f"Net Pay: ${net_pay:.2f}")
 
  
-# Update totals
-
+# Updating the totals
                     totals['total_employees'] += 1
 
                     totals['total_hours'] += hours_worked
@@ -197,14 +181,13 @@ def generate_report():
 
     except FileNotFoundError:
 
-        print("No data available. Please enter employee data first.")
+        print("No data available. Please enter employee data and try again.")
 
         return
 
  
-# Display totals summary
-
-    print("\n--- Totals Summary ---")
+# Displaying the totals summary
+    print("\n<--- Totals Summary for ALL Employees --->\n")
 
     print(f"Total Number of Employees: {totals['total_employees']}")
 
@@ -218,20 +201,18 @@ def generate_report():
 
  
 # Main function to run the program
-
 def main():
 
     while True:
 
         print("\n1. Enter Employee Data")
 
-        print("2. Generate Payroll Report")
+        print("2. Generate A Payroll Report")
 
         print("3. Exit")
 
         choice = input("Choose an option: ")
 
- 
         if choice == "1":
 
             collect_employee_data()
@@ -248,7 +229,7 @@ def main():
 
         else:
 
-            print("Invalid option. Please try again.")
+            print("Invalid option! Please select a valid choice.")
 
  
 # Run the payroll program
